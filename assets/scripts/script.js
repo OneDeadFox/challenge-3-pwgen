@@ -2,21 +2,38 @@ function generatePassword() {
   
   //Initalizing Variables
   var pLength = 0;
-  var confirmNum = false;
-  var confirmUp = false;
-  var confirmLow = false;
-  var confirmChar = false;
-  var options = [confirmNum, confirmUp, confirmLow, confirmChar]
+  var objNum = {
+    objName: confirmNum,
+    objSelected: false,
+  };
+  var objUp = {
+    objName: confirmUp,
+    objSelected: false,
+  };
+  var objLow = {
+    objName: confirmLow,
+    objSelected: false,
+  };
+  var objChar = {
+    objName: confirmChar,
+    objSelected: false,
+  };
+  var options = [];
+  // var options = [1,2,3,4,5];
+  var passwordActual = "";
 
-  //f() for opening confirm pop-up
+
+  // //f() for opening confirm pop-up
   function confirmAction(popPrompt) {
     let response = confirm(popPrompt);
+    console.log(response);
     return(response);
   }
 
   //f() for opening a user input pop-up
   function confirmLegth(popPrompt) {
     userLength = prompt(popPrompt);
+    console.log(userLength);
     return(userLength);
   }
 
@@ -26,14 +43,18 @@ function generatePassword() {
     if (pLength < 8 || passLength > 128) {
       alert("Please try again");
       lengthFunc();
-    }else{
+    } else if(isNaN(pLength)) {
+      alert("Please try again");
+      lengthFunc();
+    } else {
     return(pLength);
     }
   }
 
   //f() for random number
   function randomNum(range) {
-    let num = math.floor(math.random() * range);
+    let num = Math.floor(Math.random() * range);
+    toString(num);
 
     return (num);
   }
@@ -45,40 +66,83 @@ function generatePassword() {
 
     return(letter);
   }
+  
   //f() for random special characters
-  function specialChar() {
+  function randomChar() {
     let chars = ["!","#","$","%","&","(",")","*","+",",","-",".","/",":",";","<","=",">","?","@","[","]","^","_","{","|","}","~","\"","\'","\`",];
     let char = chars[randomNum(chars.length)];
 
     return(char);
   }
-  
-  //determine length
+
+  //Determine length
   passLength();
+  console.log(pLength);
   
-  //loop until at least 1 option is choosen
-  while(!confirmNum || !confirmUp || !confirmLow || !confirmChar){
-  alert("Please select okay for at least 1 of the following prompts.")
-  confirmNum = confirmAction("Would you like your password to contain numbers?")
-  confirmUp = confirmAction("Would you like your password to contain capital letters?")
-  confirmLow = confirmAction("Would you like your password to contain lowercase letters?")
-  confirmChar = confirmAction("Would you like your password to contain special characters?")
+ // Loop until at least 1 option is choosen
+ // Change the confirm vars to an array of objects with properties of name and value.
+  while(confirmNum !== true && confirmUp !== true && confirmLow !== true && confirmChar !== true){
+  alert("Please select okay for at least 1 of the following prompts.");
+  confirmNum = confirmAction("Your password will contain numbers?");
+  confirmUp = confirmAction("Your password will contain capital letters?");
+  confirmLow = confirmAction("Your password wil contain lowercase letters?");
+  confirmChar = confirmAction("Your password will contain special characters?");
+
+  options = [confirmNum, confirmUp, confirmLow, confirmChar];
   }
 
   //Remove unchoosen options
-  if (!confirmNum){
-    options.splice(indexOf(confirmNum))
-  } else if (!confirmUp){
-    options.splice(indexOf(confirmUp))
-  } else if (!confirmLow){
-    options.splice(indexOf(confirmLow))
-  } else if (!confirmChar){
-    options.splice(indexOf(confirmChar))
+  console.log(options);
+  if (options[options.indexOf(confirmNum)] !== true){
+    options.splice(options.indexOf(confirmNum), 1);
+    console.log(options);
+    console.log("");
   }
-
+  if (options[options.indexOf(confirmUp)] !== true){
+    options.splice(options.indexOf(confirmUp), 1);
+    console.log(options);
+    console.log("");
+  }
+  if (options[options.indexOf(confirmLow)] !== true){
+    options.splice(options.indexOf(confirmLow), 1);
+    console.log(options);
+    console.log("");
+  }
+  if (options[options.indexOf(confirmChar)] !== true){
+    options.splice(options.indexOf(confirmChar), 1);
+    console.log(options);
+    console.log("");
+  }
+  
+  console.log(options);
+  console.log("");
+  
+  //Loop until a password of choosen length has been produced
   for(var i = 0; i < pLength; i++) {
 
+    var iteration = randomNum(options.length)
+    var passChar;
+    
+    console.log(iteration);
+
+    if (iteration === confirmNum){
+      passChar = randomNum(10);
+    } else if (iteration === confirmUp){
+      passChar = randomLet();
+    } else if (iteration === confirmLow){
+      passChar = randomLet();
+    } else if (iteration === confirmChar){
+      passChar = randomChar();
+    } else {
+      console.log("error!!!")
+    }
+    console.log(iteration);
+
+    passwordActual += passChar;
+    console.log(passwordActual);
   }
+  
+  return(passwordActual);
 }
 
 // Assignment Code
