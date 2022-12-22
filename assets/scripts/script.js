@@ -3,37 +3,34 @@ function generatePassword() {
   //Initalizing Variables
   var pLength = 0;
   var objNum = {
-    objName: confirmNum,
+    objName: "confirmNum",
     objSelected: false,
   };
   var objUp = {
-    objName: confirmUp,
+    objName: "confirmUp",
     objSelected: false,
   };
   var objLow = {
-    objName: confirmLow,
+    objName: "confirmLow",
     objSelected: false,
   };
   var objChar = {
-    objName: confirmChar,
+    objName: "confirmChar",
     objSelected: false,
   };
   var options = [];
-  // var options = [1,2,3,4,5];
   var passwordActual = "";
 
 
   // //f() for opening confirm pop-up
   function confirmAction(popPrompt) {
     let response = confirm(popPrompt);
-    console.log(response);
     return(response);
   }
 
   //f() for opening a user input pop-up
   function confirmLegth(popPrompt) {
     userLength = prompt(popPrompt);
-    console.log(userLength);
     return(userLength);
   }
 
@@ -77,69 +74,51 @@ function generatePassword() {
 
   //Determine length
   passLength();
-  console.log(pLength);
   
  // Loop until at least 1 option is choosen
- // Change the confirm vars to an array of objects with properties of name and value.
-  while(confirmNum !== true && confirmUp !== true && confirmLow !== true && confirmChar !== true){
+  while(objNum.objSelected !== true && objUp.objSelected !== true && objLow.objSelected !== true && objChar.objSelected !== true){
   alert("Please select okay for at least 1 of the following prompts.");
-  confirmNum = confirmAction("Your password will contain numbers?");
-  confirmUp = confirmAction("Your password will contain capital letters?");
-  confirmLow = confirmAction("Your password wil contain lowercase letters?");
-  confirmChar = confirmAction("Your password will contain special characters?");
+  objNum.objSelected = confirmAction("Your password will contain numbers?");
+  objUp.objSelected = confirmAction("Your password will contain capital letters?");
+  objLow.objSelected = confirmAction("Your password will contain lowercase letters?");
+  objChar.objSelected = confirmAction("Your password will contain special characters?");
 
-  options = [confirmNum, confirmUp, confirmLow, confirmChar];
+  options = [objNum, objUp, objLow, objChar];
   }
 
   //Remove unchoosen options
-  console.log(options);
-  if (options[options.indexOf(confirmNum)] !== true){
-    options.splice(options.indexOf(confirmNum), 1);
-    console.log(options);
-    console.log("");
+  if (options[options.indexOf(objNum)].objSelected !== true){
+    options.splice(options.indexOf(objNum), 1);
   }
-  if (options[options.indexOf(confirmUp)] !== true){
-    options.splice(options.indexOf(confirmUp), 1);
-    console.log(options);
-    console.log("");
+  if (options[options.indexOf(objUp)].objSelected !== true){
+    options.splice(options.indexOf(objUp), 1);
   }
-  if (options[options.indexOf(confirmLow)] !== true){
-    options.splice(options.indexOf(confirmLow), 1);
-    console.log(options);
-    console.log("");
+  if (options[options.indexOf(objLow)].objSelected !== true){
+    options.splice(options.indexOf(objLow), 1);
   }
-  if (options[options.indexOf(confirmChar)] !== true){
-    options.splice(options.indexOf(confirmChar), 1);
-    console.log(options);
-    console.log("");
+  if (options[options.indexOf(objChar)].objSelected !== true){
+    options.splice(options.indexOf(objChar), 1);
   }
-  
-  console.log(options);
-  console.log("");
   
   //Loop until a password of choosen length has been produced
   for(var i = 0; i < pLength; i++) {
 
-    var iteration = randomNum(options.length)
+    var iteration = options[randomNum(options.length)].objName;
     var passChar;
-    
-    console.log(iteration);
 
-    if (iteration === confirmNum){
+    if (iteration === "confirmNum" && objNum.objSelected === true){
       passChar = randomNum(10);
-    } else if (iteration === confirmUp){
+    } else if (iteration === "confirmUp" && objUp.objSelected === true){
+      passChar = randomLet().toUpperCase();
+    } else if (iteration === "confirmLow" && objLow.objSelected === true){
       passChar = randomLet();
-    } else if (iteration === confirmLow){
-      passChar = randomLet();
-    } else if (iteration === confirmChar){
+    } else if (iteration === "confirmChar" && objChar.objSelected === true){
       passChar = randomChar();
     } else {
       console.log("error!!!")
     }
-    console.log(iteration);
 
     passwordActual += passChar;
-    console.log(passwordActual);
   }
   
   return(passwordActual);
